@@ -1,14 +1,11 @@
 
-from helper_fcts import preprocess
-
-
 def adj_mom(df, i):
     """
     Creates relative Form from all games (home + away) for the past i games
     relative Form -> sum of points from last i games divided by expected
     points from those games
     """
-    df1 = df[["HomeTeam", "AwayTeam", "H_Pts", "A_Pts", "H_Pts_Exp", "A_Pts_Exp"]]
+    df1 = df.loc[:,["HomeTeam", "AwayTeam", "H_Pts", "A_Pts", "H_Pts_Exp", "A_Pts_Exp"]]
     df1.columns = [['Team', 'Team', 'Points', 'Points', "Points_Exp", "Points_Exp"], ['Home', 'Away', 'Home', 'Away', 'Home', 'Away']]
     df1 = df1.stack()
     mom = df1.groupby('Team').Points.apply(lambda x: x.shift().rolling(i).sum())
@@ -43,7 +40,6 @@ def last_by(df):
 
 
 def get_momentum(df, i=4):
-    df = preprocess(df)
     df = adj_mom(df, i)
     df = last_by(df)
     return df

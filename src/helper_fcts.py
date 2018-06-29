@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 from scipy.stats import poisson
+from stats import get_stats
 
 
 def get_result_encoding(df):
@@ -130,10 +131,11 @@ def rps(prob_h, prob_d, prob_a, home, draw, away):
 
 def preprocess(df):
     df = get_result_encoding(df)
+    df = get_stats(df)
     df = get_bookie_probs(df)
+    df["rps_Book"] = rps(df["H_prob_odds"], df["D_prob_odds"], df["A_prob_odds"], df["Home"],df["Draw"],df["Away"])
     df = actual_points(df)
     df = exp_points(df)
     df = actual_ahc(df)
     df = exp_ahc(df)
-    df = get_bookie_probs(df)
     return df

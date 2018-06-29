@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 from sklearn import linear_model
-from helper_fcts import get_result_encoding, get_probs, rps
+from helper_fcts import get_probs, rps
 
 
 def get_team_encoding(df):
@@ -114,7 +114,6 @@ def get_massey(df, num_teams):
     """
     main function: takes Dataframe and returns the Dataframe with ratings
     """
-    df = get_result_encoding(df)
     df = get_team_encoding(df)
     rat_off, rat_def, hfa = get_all_matchday_ratings(df, num_teams)
     home_off, away_off, home_def, away_def = get_off_def(df, rat_off, rat_def)

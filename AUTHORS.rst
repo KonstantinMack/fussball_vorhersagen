@@ -2,4 +2,4 @@
 Contributors
 ============
 
-* Konstantin <mack.konstantin@googlemail.com>
+* Konstantin Mack <mack.konstantin@googlemail.com>
