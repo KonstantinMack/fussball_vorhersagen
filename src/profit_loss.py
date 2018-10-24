@@ -29,11 +29,16 @@ def away_ahc_pl(df):
 
 
 def get_pl(df):
-    df["H_PL"] = np.where(df["FTHG"] > df["FTAG"], df["BbAvH"] - 1, -1)
-    df["D_PL"] = np.where(df["FTHG"] == df["FTAG"], df["BbAvD"] - 1, -1)
-    df["A_PL"] = np.where(df["FTHG"] < df["FTAG"], df["BbAvA"] - 1, -1)
+    try:
+        df["H_PL"] = np.where(df["FTHG"] > df["FTAG"], df["PSCH"] - 1, -1)
+        df["D_PL"] = np.where(df["FTHG"] == df["FTAG"], df["PSCD"] - 1, -1)
+        df["A_PL"] = np.where(df["FTHG"] < df["FTAG"], df["PSCA"] - 1, -1)
+    except:
+        df["H_PL"] = np.where(df["FTHG"] > df["FTAG"], df["BbAvH"] - 1, -1)
+        df["D_PL"] = np.where(df["FTHG"] == df["FTAG"], df["BbAvD"] - 1, -1)
+        df["A_PL"] = np.where(df["FTHG"] < df["FTAG"], df["BbAvA"] - 1, -1)
     df["H_Ahc_PL"] = df.apply(lambda row: home_ahc_pl(row), axis=1)
     df["A_Ahc_PL"] = df.apply(lambda row: away_ahc_pl(row), axis=1)
-    df["Over_PL"] = np.where(df["FTHG"] + df["FTAG"] >= 3, df["BbAv>2.5"] - 1, -1)
-    df["Under_PL"] = np.where(df["FTHG"] + df["FTAG"] < 3, df["BbAv<2.5"] - 1, -1)
+    df["Over_PL"] = np.where(df["FTHG"] + df["FTAG"] >= 3, df["BbAv>2.5"]-1, -1)
+    df["Under_PL"] = np.where(df["FTHG"] + df["FTAG"] < 3, df["BbAv<2.5"]-1, -1)
     return df

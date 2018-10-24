@@ -33,8 +33,8 @@ def last_by(df):
     gd = df1.groupby('Team').GoalDiff.apply(lambda x: x.shift())
     gd_ahc = df1.groupby('Team').GoalDiff_Ahc.apply(lambda x: x.shift())
     df1 = df1.assign(Last_GD=gd, Last_GD_ahc=gd_ahc).unstack()
-    df1.columns = ["GoalDiff_Ahc_away", "GoalDiff_Ahc_home", "GoalDiff_away", "GoalDiff_home", "AwayTeam", "HomeTeam", "GoalDiff_last_away", "GoalDiff_last_home", "GoalDiff_Ahc_last_away", "GoalDiff_Ahc_last_home"]
-    df1 = df1[["HomeTeam", "AwayTeam", "GoalDiff_last_home", "GoalDiff_last_away", "GoalDiff_Ahc_last_home","GoalDiff_Ahc_last_away"]]
+    df1.columns = ["GoalDiff_Ahc_away", "GoalDiff_Ahc_home", "GoalDiff_away", "GoalDiff_home", "AwayTeam", "HomeTeam", "A_GoalDiff_last", "H_GoalDiff_last", "A_GoalDiff_Ahc_last", "H_GoalDiff_Ahc_last"]
+    df1 = df1[["HomeTeam", "AwayTeam", "H_GoalDiff_last", "A_GoalDiff_last", "H_GoalDiff_Ahc_last","A_GoalDiff_Ahc_last"]]
     df = df.merge(df1, how="left", on=["HomeTeam", "AwayTeam"])
     return df
 

@@ -2,14 +2,17 @@
 fussball_vorhersagen
 ====================
 
-
-Add a short description here!
+The aim of this project is to create prediction model for football matches.
 
 
 Description
 ===========
 
-A longer description of your project goes here...
+This project started as my final project for my data science bootcamp. The Notebook with the presentation (model_final.ipynb) can be found in the folder "src".
+I use various machine learning and deep learning techniques in this project to create football prediction models.
+A detailed documentation of this project can be found here: LINK
+
+Each week I will post the resulting predictions for each match from the top 5 European leagues (England, Spain, Germany, Italy France) below:
 
 
 Note

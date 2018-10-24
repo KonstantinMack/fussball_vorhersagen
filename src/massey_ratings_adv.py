@@ -5,6 +5,13 @@ from sklearn import linear_model
 from helper_fcts import get_probs, rps
 
 
+def get_round(df, num_teams):
+    matches = int(num_teams / 2)
+    matchday_list = sum([[i] * matches for i in range(1, 50)], [])
+    df["round"] = matchday_list[:df.shape[0]]
+    return df
+
+
 def get_team_encoding(df):
     """
     Creates unique team_Ids for the teams.
@@ -47,7 +54,7 @@ def get_ratings(df, num_teams):
     returns dict for offense ratings, dict for defense ratings, and the
     home-field-advantage HFA
     """
-    df2 = df[["HomeId", "AwayId", "FTHG", "FTAG"]]
+    df2 = df[["HomeId", "AwayId", "FTHG", "FTAG"]].applymap(int)
     M, R = buildGamesMatrix3(df2.values, num_teams)
     clf = linear_model.Ridge(fit_intercept=False, alpha=0.1)
     clf.fit(M,R)
@@ -110,10 +117,20 @@ def get_exp_goals(df):
     return df
 
 
-def get_massey(df, num_teams):
+def poi_mas_mix(df):
+    df["H_xG_PoiMas"] = (df['H_xG_Poi_mix'] + df['H_xG_Mas']) / 2
+    df["A_xG_PoiMas"] = (df['A_xG_Poi_mix'] + df['A_xG_Mas']) / 2
+    df["H_pred_PoiMas"], df["D_pred_PoiMas"], df["A_pred_PoiMas"], df["O_pred_PoiMas"], df["U_pred_PoiMas"] = get_probs(df["H_xG_PoiMas"], df["A_xG_PoiMas"])
+    df["rps_PoiMas"] = rps(df["H_pred_PoiMas"], df["D_pred_PoiMas"], df["A_pred_PoiMas"], df["Home"], df["Draw"], df["Away"])
+    return df
+
+
+def get_massey(df1, num_teams):
     """
     main function: takes Dataframe and returns the Dataframe with ratings
     """
+    df = df1.copy()
+    df = get_round(df, num_teams)
     df = get_team_encoding(df)
     rat_off, rat_def, hfa = get_all_matchday_ratings(df, num_teams)
     home_off, away_off, home_def, away_def = get_off_def(df, rat_off, rat_def)
@@ -124,6 +141,6 @@ def get_massey(df, num_teams):
     df = df.merge(away_def, left_index=True, right_index=True, how="left")
     df = df.merge(hfa, how="left", left_on="round", right_index=True)
     df = get_exp_goals(df)
-    df["H_pred_Mas"], df["D_pred_Mas"], df["A_pred_Mas"] = get_probs(df["H_xG_Mas"], df["A_xG_Mas"])
+    df["H_pred_Mas"], df["D_pred_Mas"], df["A_pred_Mas"], df["O_pred_Mas"], df["U_pred_Mas"] = get_probs(df["H_xG_Mas"], df["A_xG_Mas"])
     df["rps_Mas"] = rps(df["H_pred_Mas"], df["D_pred_Mas"], df["A_pred_Mas"], df["Home"],df["Draw"],df["Away"])
     return df
