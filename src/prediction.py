@@ -1,8 +1,8 @@
 
-from fixtures import get_new_matches
-from sklearn.externals import joblib
-from keras.models import load_model
 import pandas as pd
+from fixtures import get_new_matches
+from keras.models import load_model
+from sklearn.externals import joblib
 
 
 def load_scaling(df, league, cols):

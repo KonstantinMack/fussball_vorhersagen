@@ -1,6 +1,6 @@
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from scipy.stats import poisson
 from profit_loss import get_pl
 
@@ -26,9 +26,9 @@ def make_int_helper(x):
     return x
 
 
-def make_ints(df):
+def make_ints(df): #'HF', 'AF', aus cols rausgenommen hinter AST
     df.dropna(thresh=5, inplace=True)
-    cols = ['FTHG', 'FTAG', 'HTHG', 'HTAG', 'HS', 'AS', 'HST', 'AST', 'HF', 'AF', 'HC','AC', 'HY', 'AY', 'HR', 'AR']
+    cols = ['FTHG', 'FTAG', 'HTHG', 'HTAG', 'HS', 'AS', 'HST', 'AST', 'HC','AC', 'HY', 'AY', 'HR', 'AR']
     df[cols] = df[cols].applymap(lambda x: make_int_helper(x))
     return df
 

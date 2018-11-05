@@ -1,8 +1,4 @@
 
-import pandas as pd
-import numpy as np
-
-
 def marktwerte(df, werte):
     werte = werte.set_index("Team").unstack().reset_index()
     werte.columns = ["season", "team", "value"]

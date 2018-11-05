@@ -69,6 +69,22 @@ def get_avg_shots_expanding(df):
     return Lg_HS, Lg_AS, Lg_HST, Lg_AST, H_avgS, A_avgS, H_avgS_c, A_avgS_c, H_avgST, A_avgST, H_avgST_c, A_avgST_c
 
 
+def get_avg_corners_rolling(df, window=6, min_periods=4):
+    H_avgC = df.groupby("HomeTeam")["HC"].apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift())
+    A_avgC = df.groupby("AwayTeam")["AC"].apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift())
+    H_avgC_c = df.groupby("HomeTeam")["AC"].apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift())
+    A_avgC_c = df.groupby("AwayTeam")["HC"].apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift())
+    return H_avgC, A_avgC, H_avgC_c, A_avgC_c
+
+
+def get_avg_corners_expanding(df):
+    H_avgC = df.groupby("HomeTeam")["HC"].apply(lambda x: x.expanding().mean().shift())
+    A_avgC = df.groupby("AwayTeam")["AC"].apply(lambda x: x.expanding().mean().shift())
+    H_avgC_c = df.groupby("HomeTeam")["AC"].apply(lambda x: x.expanding().mean().shift())
+    A_avgC_c = df.groupby("AwayTeam")["HC"].apply(lambda x: x.expanding().mean().shift())
+    return H_avgC, A_avgC, H_avgC_c, A_avgC_c
+
+
 def get_stats(df2, mode="expanding", window=6, min_periods=4):
     df = df2.copy()
     if mode == "rolling":
@@ -100,6 +116,10 @@ def get_stats2(df2, window=6, min_periods=4):
 
     Lg_HS, Lg_AS, Lg_HST, Lg_AST, H_avgS, A_avgS, H_avgS_c, A_avgS_c, H_avgST, A_avgST, H_avgST_c, A_avgST_c = get_avg_shots_rolling(df, window, min_periods)
     Lg_HSe, Lg_ASe, Lg_HSTe, Lg_ASTe, H_avgSe, A_avgSe, H_avgS_ce, A_avgS_ce, H_avgSTe, A_avgSTe, H_avgST_ce, A_avgST_ce = get_avg_shots_expanding(df)
+
+    H_avgC, A_avgC, H_avgC_c, A_avgC_c = get_avg_corners_rolling(df, window, min_periods)
+    H_avgCe, A_avgCe, H_avgC_ce, A_avgC_ce = get_avg_corners_expanding(df)
+
     df["Lg_HS"] = (Lg_HS + 2*Lg_HSe) / 3
     df["Lg_AS"] = (Lg_AS + 2*Lg_ASe) / 3
     df["Lg_HST"] = (Lg_HST + 2*Lg_HSTe) / 3
@@ -112,5 +132,10 @@ def get_stats2(df2, window=6, min_periods=4):
     df["A_avgST"] = (A_avgST + 2*A_avgSTe) / 3
     df["H_avgST_c"] = (H_avgST_c + 2*H_avgST_ce) / 3
     df["A_avgST_c"] = (A_avgST_c + 2*A_avgST_ce) / 3
+
+    df["H_avgC"] = (H_avgC + 2*H_avgCe) / 3
+    df["A_avgC"] = (A_avgC + 2*A_avgCe) / 3
+    df["H_avgC_c"] = (H_avgC_c + 2*H_avgC_ce) / 3
+    df["A_avgC_c"] = (A_avgC_c + 2*A_avgC_ce) / 3
 
     return df
