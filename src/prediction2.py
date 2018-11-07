@@ -75,7 +75,7 @@ def get_predictions(save=None):
     """
     new_matches = pd.read_csv("http://www.football-data.co.uk/fixtures.csv")
     fix_date = max(pd.to_datetime(new_matches.Date, format='%d/%m/%y'))
-    if datetime.datetime.now() > fix_date:
+    if datetime.date.today() > fix_date.date():
         print("No new matches! Come back later!\nData for new matches usually arrives Tuesday for midweek matches and friday for weekend matches.")
         preds = None
         bets = None
@@ -84,18 +84,31 @@ def get_predictions(save=None):
         print("preprocessing major leagues...")
 
         main_leagues = get_fixtures()
-        X_main = main_leagues[COLS]
-        df_main = get_models(main_leagues, X_main)
+        if main_leagues.empty:
+            print("no major leagues this matchday")
+        else:
+            X_main = main_leagues[COLS]
+            df_main = get_models(main_leagues, X_main)
 
         print("preprocessing minor leagues...")
 
         other_leagues = get_fixtures_other()
-        X_other = other_leagues[COLS[:-8]]
-        df_other = get_models(other_leagues, X_other, "other_")
+        if other_leagues.empty:
+            print("no minor leagues this matchday")
+        else:
+            X_other = other_leagues[COLS[:-8]]
+            df_other = get_models(other_leagues, X_other, "other_")
 
         print("evaluating models...")
-
-        df = pd.concat([df_main, df_other]).reset_index(drop=True)
+        if not main_leagues.empty and not other_leagues.empty:
+            df = pd.concat([df_main, df_other]).reset_index(drop=True)
+        elif not main_leagues.empty and other_leagues.empty:
+            df = df_main.copy()
+        elif not other_leagues.empty and main_leagues.empty:
+            df = df_other.copy()
+        else:
+            print("There are no matches on this week")
+            return None, None
 
         df.loc[df["Diff"] <= -0.15, "BET"] = "HOME " + df["AHC"].apply(str)
         df.loc[df["Diff"] >= 0.15, "BET"] = "AWAY " + (-df["AHC"]).apply(str)
@@ -107,6 +120,7 @@ def get_predictions(save=None):
         bets = preds.loc[abs(preds["Diff"]) >= 0.15].reset_index(drop=True)
 
         if save:
-            preds.to_pickle(PATH + f"predictions\\prediction_{DATE}.pkl")
-
+            preds.to_pickle(PATH + f"predictions\\pkl\\prediction_{DATE}.pkl")
+            preds.to_excel(PATH + f"predictions\\excel\\prediction_{DATE}.xlsx")
+        print("Done! Good luck!")
     return preds, bets

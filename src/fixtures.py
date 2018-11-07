@@ -102,12 +102,14 @@ def get_matches(league):
 def get_fixtures():
     fixtures = pd.read_csv("http://www.football-data.co.uk/fixtures.csv")
     fixtures.to_csv(PATH + f"data\\fixtures\\fixtures_{DATE}.csv")
-    leagues = list(set(fixtures.Div.unique()).intersection(set(["D1", "E0", "E1", "E2", "F1", "I1", "SP1"]))) #E3 rausgenommen
-    fix_list = [get_matches(lg) for lg in leagues]
-
-    df = pd.concat(fix_list).reset_index(drop=True)
-    df = df.loc[df[COLS].dropna().index].reset_index(drop=True)
-    return df
+    leagues = list(set(fixtures.Div.unique()).intersection(set(["D1", "E0", "E1", "E2", "E3", "F1", "I1", "SP1"])))
+    if leagues:
+        fix_list = [get_matches(lg) for lg in leagues]
+        df = pd.concat(fix_list).reset_index(drop=True)
+        df = df.loc[df[COLS].dropna().index].reset_index(drop=True)
+        return df
+    else:
+        return pd.DataFrame()
 
 
 def get_matches_other(league):
@@ -131,8 +133,10 @@ def get_matches_other(league):
 def get_fixtures_other():
     fixtures = pd.read_csv("http://www.football-data.co.uk/fixtures.csv")
     leagues = list(set(fixtures.Div.unique()).intersection(set(["D2", "F2", "I2", "SP2", "B1", "G1", "N1", "P1", "T1"])))
-    fix_list = [get_matches_other(lg) for lg in leagues]
-
-    df = pd.concat(fix_list).reset_index(drop=True)
-    df = df.loc[df[COLS[:-8]].dropna().index].reset_index(drop=True)
-    return df
+    if leagues:
+        fix_list = [get_matches_other(lg) for lg in leagues]
+        df = pd.concat(fix_list).reset_index(drop=True)
+        df = df.loc[df[COLS[:-8]].dropna().index].reset_index(drop=True)
+        return df
+    else:
+        return pd.DataFrame()
