@@ -14,19 +14,6 @@ A more detailed documentation of this project can be found here: LINK
 
 Each week I will post my predictions for the Premier League below:
 
-=====  =====  ====== 
-   Inputs     Output 
-------------  ------ 
-  A      B    A or B 
-=====  =====  ====== 
-False  False  False 
-True   False  True 
-False  True   True 
-True   True   True 
-=====  =====  ======
-
-
-
 Date|Div|HomeTeam|AwayTeam|x_HG|x_AG|x_HC|AHC|adj_AHC|Diff|H_Odds|A_Odds|BET
 ---|---|---|---|---|---|---|---|---|---|---|---|---
 10/11/18|E0|Cardiff City|Brighton & Hove Albion|1.27|1.02|-0.25|-0.25|-0.1|-0.15|2.15|1.75|HOME -0.25
