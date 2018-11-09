@@ -14,10 +14,16 @@ A more detailed documentation of this project can be found here: LINK
 
 Each week I will post my predictions for the Premier League below:
 
-| Command | Description |
-| --- | --- |
-| git status | List all new or modified files |
-| git diff | Show file differences that haven't been staged |
+=====  =====  ====== 
+   Inputs     Output 
+------------  ------ 
+  A      B    A or B 
+=====  =====  ====== 
+False  False  False 
+True   False  True 
+False  True   True 
+True   True   True 
+=====  =====  ======
 
 
 
