@@ -14,6 +14,12 @@ A more detailed documentation of this project can be found here: LINK
 
 Each week I will post my predictions for the Premier League below:
 
+| Command | Description |
+| --- | --- |
+| git status | List all new or modified files |
+| git diff | Show file differences that haven't been staged |
+
+
 
 Date|Div|HomeTeam|AwayTeam|x_HG|x_AG|x_HC|AHC|adj_AHC|Diff|H_Odds|A_Odds|BET
 ---|---|---|---|---|---|---|---|---|---|---|---|---
