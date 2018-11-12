@@ -52,4 +52,4 @@ Abbreviations:
 - BET -> suggested bet (if Diff is >0.15 or <-0.15 respectively)
 
 
-Statistics of my bets from the Premier League and many other leagues can be found `here<https://dataguybets.blogabet.com/>`_.
+Statistics of my bets from the Premier League and many other leagues can be found on my `BlogaBet Account <https://dataguybets.blogabet.com/>`_.
