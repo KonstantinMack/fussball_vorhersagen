@@ -14,9 +14,10 @@ A more detailed documentation of this project can be found here: LINK
 
 Each week I will post my predictions for the Premier League below:
 
-First Header | Second Header
------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
+========  ===  =================  ======================= 
+  Date    Div      HomeTeam              AwayTeam         
+========  ===  =================  ======================= 
+10/11/18  E0   Cardiff City       Brighton & Hove Albion  
+10/11/18  E0   Crystal Palace     Tottenham Hotspur      
 
 
