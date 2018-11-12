@@ -40,6 +40,7 @@ Each week I will post my predictions for the Premier League below:
 
 
 Abbreviations:
+
 - x_HG -> expected goals by the home team
 - x_AG -> expected goals by the away team
 - x_HC -> expected goal difference
