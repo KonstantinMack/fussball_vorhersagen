@@ -49,7 +49,7 @@ Abbreviations:
 - Diff -> difference between x_HC and adj_AHC
 - H_Odds -> bookie's ahc odds for the home team
 - A_Odds -> bookie's ahc odds for the away team
-- BET -> suggested bet (if Diff is >0.15 or <-0.15 respectively)
+- BET -> suggested bet (if Diff is >=0.15 or <=-0.15 respectively)
 
 
 Statistics of my bets from the Premier League and many other leagues can be found on my `BlogaBet Account <https://dataguybets.blogabet.com/>`_.
