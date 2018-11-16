@@ -71,7 +71,7 @@ def live_odds(preds):
     fixtures = get_relevant_info(fixtures)
     fixtures = pd.DataFrame(fixtures)
 
-    with open('team_dict.pkl', 'rb') as handle:
+    with open('teams_dict.pkl', 'rb') as handle:
         team_dict = pickle.load(handle)
 
     preds["HomeTeam"] = preds.HomeTeam.map(team_dict)

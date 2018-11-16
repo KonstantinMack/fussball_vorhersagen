@@ -7,6 +7,9 @@ import stats2
 
 
 def modelling(df1, num_teams, stat="MIX", window=6, min_periods=4):
+    """
+    Main function to get the stats for past results/backtesting
+    """
     df = df1.copy()
     df = helper_fcts.preprocess(df)
     df = momentum.get_momentum(df)

@@ -7,6 +7,7 @@ from keras.models import load_model
 from sklearn.externals import joblib
 
 from fixtures import get_fixtures, get_fixtures_other
+from fixtures_sportmonks import get_fixtures_sportsmonks, get_fixtures_other_sportsmonks
 
 
 PATH = "C:\\Users\\Konny\\DataScience\\SpicedAcademy\\fussball_vorhersagen\\src\\"
@@ -14,12 +15,19 @@ DATE = datetime.datetime.now().strftime("%d-%m-%y")
 COLS = ['H_avgGD', 'A_avgGD', 'H_avgG', 'A_avgG', 'H_avgG_c', 'A_avgG_c', 'H_avgST', 'A_avgST', 'H_avgST_c', 'A_avgST_c', 'H_avgC', 'A_avgC', 'H_avgC_c', 'A_avgC_c', 'H_GoalDiff_last', 'A_GoalDiff_last', 'H_xG_PoiMas', 'A_xG_PoiMas', 'H_Form_Tot4', 'A_Form_Tot4','H_Def_Rat', 'H_Off_Rat', 'A_Def_Rat', 'A_Off_Rat', "H_prob_odds", "D_prob_odds", "A_prob_odds", "D1", "E0", "E1", "E2", "E3", "F1", "I1", "SP1"]
 
 
-def approx_goaldiff(line, home_odds):
-    diff = (home_odds - 1.93) / 1.5
+def approx_goaldiff(line, ahc_home_odds):
+    """
+    Approximates goal difference suggested by bookmaker's line and odds
+    """
+    diff = (ahc_home_odds - 1.93) / 1.25
     return round(line + diff, 2)
 
 
 def get_models(df, X, prefix=""):
+    """
+    Loads and runs the different models and returns their predictions
+    """
+
     ### XGB
     xgb_h = joblib.load(PATH + "model_weights\\{}xgb_h.model".format(prefix))
     xgb_a = joblib.load(PATH + "model_weights\\{}xgb_a.model".format(prefix))
@@ -123,4 +131,55 @@ def get_predictions(save=None):
             preds.to_pickle(PATH + f"predictions\\pkl\\prediction_{DATE}.pkl")
             preds.to_excel(PATH + f"predictions\\excel\\prediction_{DATE}.xlsx")
         print("Done! Good luck!")
+    return preds, bets
+
+
+def get_predictions_sportmonks(date1, date2, save=None):
+    """
+    Calculates predictions for the new matchday
+    save: if save -> saves predictions as pickle file
+    date format: "2018-11-16"
+    """
+    print("preprocessing major leagues...")
+
+    main_leagues = get_fixtures_sportsmonks(date1, date2)
+    if main_leagues.empty:
+        print("no major leagues this matchday")
+    else:
+        X_main = main_leagues[COLS]
+        df_main = get_models(main_leagues, X_main)
+
+    print("preprocessing minor leagues...")
+
+    other_leagues = get_fixtures_other_sportsmonks(date1, date2)
+    if other_leagues.empty:
+        print("no minor leagues this matchday")
+    else:
+        X_other = other_leagues[COLS[:-8]]
+        df_other = get_models(other_leagues, X_other, "other_")
+
+    print("evaluating models...")
+    if not main_leagues.empty and not other_leagues.empty:
+        df = pd.concat([df_main, df_other]).reset_index(drop=True)
+    elif not main_leagues.empty and other_leagues.empty:
+        df = df_main.copy()
+    elif not other_leagues.empty and main_leagues.empty:
+        df = df_other.copy()
+    else:
+        print("There are no matches on this week")
+        return None, None
+
+    df.loc[df["Diff"] <= -0.15, "BET"] = "HOME " + df["AHC"].apply(str)
+    df.loc[df["Diff"] >= 0.15, "BET"] = "AWAY " + (-df["AHC"]).apply(str)
+    df.loc[abs(df["Diff"]) < 0.15, "BET"] = "------"
+
+    preds = df.loc[:,["Date", "Div", "HomeTeam", "AwayTeam", "x_HG", "x_AG", "x_HC", "AHC", "adj_AHC", "Diff", "BbAvAHH", "BbAvAHA", "BET"]]
+    preds = preds.rename({"BbAvAHH": "H_Odds", "BbAvAHA": "A_Odds"}, axis="columns")
+
+    bets = preds.loc[abs(preds["Diff"]) >= 0.15].reset_index(drop=True)
+
+    if save:
+        preds.to_pickle(PATH + f"predictions\\pkl\\prediction_{DATE}.pkl")
+        preds.to_excel(PATH + f"predictions\\excel\\prediction_{DATE}.xlsx")
+    print("Done! Good luck!")
     return preds, bets

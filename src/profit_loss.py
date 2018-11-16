@@ -3,6 +3,9 @@ import numpy as np
 
 
 def home_ahc_pl(df):
+    """
+    Calculates profit/loss for ahc bets on the home team
+    """
     if df["FTHG"] + df["BbAHh"] - df["FTAG"] > 0.25:
         return df["BbAvAHH"] - 1
     elif df["FTHG"] + df["BbAHh"] - df["FTAG"] == 0.25:
@@ -16,6 +19,9 @@ def home_ahc_pl(df):
 
 
 def away_ahc_pl(df):
+    """
+    Calculates profit/loss for ahc bets on the away team
+    """
     if df["FTHG"] + df["BbAHh"] - df["FTAG"] > 0.25:
         return -1
     elif df["FTHG"] + df["BbAHh"] - df["FTAG"] == 0.25:
@@ -29,6 +35,9 @@ def away_ahc_pl(df):
 
 
 def get_pl(df):
+    """
+    Main function to calculate profit/loss for winner market, ahc, over/under
+    """
     try:
         df["H_PL"] = np.where(df["FTHG"] > df["FTAG"], df["PSCH"] - 1, -1)
         df["D_PL"] = np.where(df["FTHG"] == df["FTAG"], df["PSCD"] - 1, -1)

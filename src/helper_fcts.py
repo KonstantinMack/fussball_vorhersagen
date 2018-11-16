@@ -26,7 +26,7 @@ def make_int_helper(x):
     return x
 
 
-def make_ints(df): #'HF', 'AF', aus cols rausgenommen hinter AST
+def make_ints(df):
     df.dropna(thresh=5, inplace=True)
     cols = ['FTHG', 'FTAG', 'HTHG', 'HTAG', 'HS', 'AS', 'HST', 'AST', 'HC','AC', 'HY', 'AY', 'HR', 'AR']
     df[cols] = df[cols].applymap(lambda x: make_int_helper(x))
@@ -111,7 +111,7 @@ def get_bookie_probs(df):
         df["H_prob_odds"], df["D_prob_odds"], df["A_prob_odds"] = convert_odds(df["BbAvH"], df["BbAvD"], df["BbAvA"])
 
     df["H_prob_ahc_odds"], df["A_prob_ahc_odds"] = convert_odds(df['BbAvAHH'], df['BbAvAHA'])
-    df["Over_prob_odds"], df["Under_prob_odds"] = convert_odds(df['BbAv>2.5'], df['BbAv<2.5'])
+    #df["Over_prob_odds"], df["Under_prob_odds"] = convert_odds(df['BbAv>2.5'], df['BbAv<2.5'])
     return df
 
 
@@ -160,6 +160,9 @@ def get_poi_mas(df):
 
 
 def preprocess(df):
+    """
+    Main function for the whole preprocessing step
+    """
     df = make_ints(df)
     df["season"] = int(df.iloc[-1]["Date"][-2:])
     df = get_result_encoding(df)

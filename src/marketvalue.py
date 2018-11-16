@@ -1,3 +1,4 @@
+### deprecated!
 
 def marktwerte(df, werte):
     werte = werte.set_index("Team").unstack().reset_index()

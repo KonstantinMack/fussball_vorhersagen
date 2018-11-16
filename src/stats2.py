@@ -1,7 +1,7 @@
 
 def get_avg_goaldiff_rolling(df, window=6, min_periods=4):
     """
-    Calculates average goal difference per team at home and away
+    Calculates rolling average goal difference per team at home and away
     """
     home = df.groupby('HomeTeam').GoalDiff.apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift(1))
     away = - df.groupby('AwayTeam').GoalDiff.apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift(1))
@@ -10,7 +10,7 @@ def get_avg_goaldiff_rolling(df, window=6, min_periods=4):
 
 def get_avg_goaldiff_expanding(df):
     """
-    Calculates average goal difference per team at home and away
+    Calculates expanding average goal difference per team at home and away
     """
     home = df.groupby('HomeTeam').GoalDiff.apply(lambda x: x.expanding().mean().shift(1))
     away = - df.groupby('AwayTeam').GoalDiff.apply(lambda x: x.expanding().mean().shift(1))
@@ -18,6 +18,9 @@ def get_avg_goaldiff_expanding(df):
 
 
 def get_avg_goals_rolling(df, window=6, min_periods=4):
+    """
+    Calculates rolling average goals scored/conceded for the league and per team at home and away
+    """
     Lg_HG = df["FTHG"].expanding().mean().shift()
     Lg_AG = df["FTAG"].expanding().mean().shift()
     H_avgG = df.groupby("HomeTeam")["FTHG"].apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift())
@@ -28,6 +31,9 @@ def get_avg_goals_rolling(df, window=6, min_periods=4):
 
 
 def get_avg_goals_expanding(df):
+    """
+    Calculates expanding average goals scored/conceded for the league and per team at home and away
+    """
     Lg_HG = df["FTHG"].expanding().mean().shift()
     Lg_AG = df["FTAG"].expanding().mean().shift()
     H_avgG = df.groupby("HomeTeam")["FTHG"].apply(lambda x: x.expanding().mean().shift())
@@ -38,6 +44,9 @@ def get_avg_goals_expanding(df):
 
 
 def get_avg_shots_rolling(df, window=6, min_periods=4):
+    """
+    Calculates rolling average shots/shots on target fired/conceded for the league and per team at home and away
+    """
     Lg_HS = df["HS"].expanding().mean().shift()
     Lg_AS = df["AS"].expanding().mean().shift()
     Lg_HST = df["HST"].expanding().mean().shift()
@@ -54,6 +63,9 @@ def get_avg_shots_rolling(df, window=6, min_periods=4):
 
 
 def get_avg_shots_expanding(df):
+    """
+    Calculates expanding average shots/shots on target fired/conceded for the league and per team at home and away
+    """
     Lg_HS = df["HS"].expanding().mean().shift()
     Lg_AS = df["AS"].expanding().mean().shift()
     Lg_HST = df["HST"].expanding().mean().shift()
@@ -70,6 +82,9 @@ def get_avg_shots_expanding(df):
 
 
 def get_avg_corners_rolling(df, window=6, min_periods=4):
+    """
+    Calculates rolling average corners for/against per team at home and away
+    """
     H_avgC = df.groupby("HomeTeam")["HC"].apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift())
     A_avgC = df.groupby("AwayTeam")["AC"].apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift())
     H_avgC_c = df.groupby("HomeTeam")["AC"].apply(lambda x: x.rolling(window=window, min_periods=min_periods).mean().shift())
@@ -78,6 +93,9 @@ def get_avg_corners_rolling(df, window=6, min_periods=4):
 
 
 def get_avg_corners_expanding(df):
+    """
+    Calculates expanding average corners for/against per team at home and away
+    """
     H_avgC = df.groupby("HomeTeam")["HC"].apply(lambda x: x.expanding().mean().shift())
     A_avgC = df.groupby("AwayTeam")["AC"].apply(lambda x: x.expanding().mean().shift())
     H_avgC_c = df.groupby("HomeTeam")["AC"].apply(lambda x: x.expanding().mean().shift())
@@ -99,6 +117,9 @@ def get_stats(df2, mode="expanding", window=6, min_periods=4):
 
 
 def get_stats2(df2, window=6, min_periods=4):
+    """
+    Calculates all stats as a mixture between the rolling and expanding versions of the respective stats
+    """
     df = df2.copy()
     H_avgGDr, A_avgGDr = get_avg_goaldiff_rolling(df, window, min_periods)
     H_avgGDe, A_avgGDe = get_avg_goaldiff_expanding(df)

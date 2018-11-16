@@ -69,6 +69,9 @@ def get_ratings(df, num_teams, club_dict):
 
 
 def massey_prediction_main(df, num_teams):
+    """
+    Main function to get Massey Ratings for new fixtures
+    """
     df = get_round(df, num_teams)
     df, club_dict = get_team_encoding(df)
     rat_off, rat_def, rat_hfa = get_ratings(df, num_teams, club_dict)

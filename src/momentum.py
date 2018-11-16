@@ -40,6 +40,9 @@ def last_by(df):
 
 
 def get_momentum(df, i=4):
+    """
+    Main function to get the Momentum measures calculated over the past i games
+    """
     df = adj_mom(df, i)
     df = last_by(df)
     return df

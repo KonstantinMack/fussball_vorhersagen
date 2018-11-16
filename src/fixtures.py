@@ -16,6 +16,9 @@ COLS = ['H_avgGD', 'A_avgGD', 'H_avgG', 'A_avgG', 'H_avgG_c', 'A_avgG_c', 'H_avg
 
 
 def get_data(league):
+    """
+    Downloads league-specific data from football-data.co.uk
+    """
     df = pd.read_csv(f"http://www.football-data.co.uk/mmz4281/1819/{league}.csv")
     df["HomeTeam"] = df["HomeTeam"].apply(str.strip)
     df["AwayTeam"] = df["AwayTeam"].apply(str.strip)
@@ -29,6 +32,9 @@ def get_data(league):
 
 
 def help_step(df_new, matches):
+    """
+    Calculates stats for new matches
+    """
     df_new = preprocess(df_new)
     df_new = get_momentum(df_new)
     df_new = get_stats2(df_new, 6, 4)
@@ -37,6 +43,9 @@ def help_step(df_new, matches):
 
 
 def add_ratings(df, rat_off, rat_def, rat_hfa):
+    """
+    Helper function for Massey Ratings
+    """
     df["H_Off_Rat"] = df["HomeTeam"].map(rat_off)
     df["H_Def_Rat"] = df["HomeTeam"].map(rat_def)
     df["A_Off_Rat"] = df["AwayTeam"].map(rat_off)
@@ -56,6 +65,9 @@ def get_exp_goals(df):
 
 
 def poi_mas_mix(df):
+    """
+    Calculates the average expected goals from Poisson and Massey Model
+    """
     df["H_xG_PoiMas"] = (df['H_xG_Poi_mix'] + df['H_xG_Mas']) / 2
     df["A_xG_PoiMas"] = (df['A_xG_Poi_mix'] + df['A_xG_Mas']) / 2
     df["H_pred_PoiMas"], df["D_pred_PoiMas"], df["A_pred_PoiMas"], df["O_pred_PoiMas"], df["U_pred_PoiMas"] = get_probs(df["H_xG_PoiMas"], df["A_xG_PoiMas"])
@@ -63,6 +75,9 @@ def poi_mas_mix(df):
 
 
 def get_new_matches(league, num_teams):
+    """
+    Processes the new fixtures
+    """
     print(f"processing league: {league}")
     df, fixs = get_data(league)
     rat_off, rat_def, rat_hfa = massey_prediction_main(df, num_teams)
@@ -78,6 +93,9 @@ def get_new_matches(league, num_teams):
 
 
 def get_matches(league):
+    """
+    Gets new fixtures and creates league Dummy for main leagues
+    """
 
     league_mapping = {
         "E0": 20,
@@ -100,6 +118,9 @@ def get_matches(league):
 
 
 def get_fixtures():
+    """
+    Main function to get new fixtures for main leagues
+    """
     fixtures = pd.read_csv("http://www.football-data.co.uk/fixtures.csv")
     fixtures.to_csv(PATH + f"data\\fixtures\\fixtures_{DATE}.csv")
     leagues = list(set(fixtures.Div.unique()).intersection(set(["D1", "E0", "E1", "E2", "E3", "F1", "I1", "SP1"])))
@@ -113,6 +134,9 @@ def get_fixtures():
 
 
 def get_matches_other(league):
+    """
+    Gets new fixtures for minor leagues
+    """
 
     league_mapping = {
         "F2": 20,
@@ -131,6 +155,9 @@ def get_matches_other(league):
 
 
 def get_fixtures_other():
+    """
+    Main function to get new fixtures for minor leagues
+    """
     fixtures = pd.read_csv("http://www.football-data.co.uk/fixtures.csv")
     leagues = list(set(fixtures.Div.unique()).intersection(set(["D2", "F2", "I2", "SP2", "B1", "G1", "N1", "P1", "T1"])))
     if leagues:
