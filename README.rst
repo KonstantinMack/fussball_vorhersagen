@@ -8,10 +8,11 @@ The aim of this project is to create football prediction models which can beat t
 Description
 ===========
 
-This project started as my final project for a data science bootcamp. The Jupyter-Notebook with the presentation (model_final.ipynb) can be found in the folder "src".
+This project started as my final project for a data science bootcamp. The Jupyter-Notebook with the presentation (presentation.ipynb) can be found in the folder "src".
+
 I use various machine learning and deep learning techniques in this project to create football prediction models.
 
-Each week I will post my predictions for the Premier League below (usually updated on Tuesdays for midweek matches and Fridays for weekend matches). Starting November statistics of my bets from the Premier League and many other leagues can be found on my `BlogaBet Account <https://dataguybets.blogabet.com/>`_.
+Each week I will post my predictions for the Premier League below (usually updated on Tuesdays for midweek matches and Fridays for weekend matches). Starting November, statistics of my bets from the Premier League and many other leagues can be found on my `BlogaBet Account <https://dataguybets.blogabet.com/>`_.
 
 +--------+---+-----------------+-----------------------+----+----+-----+------+-------+-----+------+------+-----------+
 |  Date  |Div|    HomeTeam     |       AwayTeam        |x_HG|x_AG|x_HC | AHC  |adj_AHC|Diff |H_Odds|A_Odds|    BET    |
