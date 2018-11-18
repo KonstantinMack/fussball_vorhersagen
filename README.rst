@@ -10,9 +10,8 @@ Description
 
 This project started as my final project for a data science bootcamp. The Jupyter-Notebook with the presentation (model_final.ipynb) can be found in the folder "src".
 I use various machine learning and deep learning techniques in this project to create football prediction models.
-A more detailed documentation of this project can be found here: LINK
 
-Each week I will post my predictions for the Premier League below:
+Each week I will post my predictions for the Premier League below (usually updated on Tuesdays for midweek matches and Fridays for weekend matches). Starting November statistics of my bets from the Premier League and many other leagues can be found on my `BlogaBet Account <https://dataguybets.blogabet.com/>`_.
 
 +--------+---+-----------------+-----------------------+----+----+-----+------+-------+-----+------+------+-----------+
 |  Date  |Div|    HomeTeam     |       AwayTeam        |x_HG|x_AG|x_HC | AHC  |adj_AHC|Diff |H_Odds|A_Odds|    BET    |
@@ -50,6 +49,3 @@ Abbreviations:
 - H_Odds -> bookie's ahc odds for the home team
 - A_Odds -> bookie's ahc odds for the away team
 - BET -> suggested bet (if Diff is >=0.15 or <=-0.15 respectively)
-
-
-Statistics of my bets from the Premier League and many other leagues can be found on my `BlogaBet Account <https://dataguybets.blogabet.com/>`_.
