@@ -8,7 +8,7 @@ The aim of this project is to create football prediction models which can beat t
 Description
 ===========
 
-This project started as my final project for a data science bootcamp. The Jupyter-Notebook with the presentation (presentation.ipynb) can be found in the folder "src".
+This project started as my final project for a data science bootcamp. The Jupyter-Notebook with the presentation (PRESENTATION.ipynb) can be found in the folder "src".
 
 I use various machine learning and deep learning techniques in this project to create football prediction models.
 
