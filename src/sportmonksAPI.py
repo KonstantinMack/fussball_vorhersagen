@@ -11,8 +11,8 @@ API = os.getenv('SPORTMONKS')
 
 
 def get_dates(preds):
-    date1 = min(pd.to_datetime(preds.Date, format='%d/%m/%y')).strftime("%Y-%m-%d")
-    date2 = max(pd.to_datetime(preds.Date, format='%d/%m/%y')).strftime("%Y-%m-%d")
+    date1 = min(pd.to_datetime(preds.Date, format='%d/%m/%Y')).strftime("%Y-%m-%d")
+    date2 = max(pd.to_datetime(preds.Date, format='%d/%m/%Y')).strftime("%Y-%m-%d")
     return date1, date2
 
 
@@ -41,7 +41,13 @@ def get_hc_odds(odds_list):
     aprx_hc = mini["handicap"] + (mini["value"] - 1.96) / 1.2
     hc = mini.handicap
     opp = mini.label % 2 + 1
-    opp_odds = float(df.loc[(df["handicap"] == -hc) & (df["label"] == opp), "value"])
+    try:
+        opp_odds = float(df.loc[(df["handicap"] == -hc) & (df["label"] == opp), "value"])
+    except:
+        if mini.label == 1:
+            return hc, round(aprx_hc, 2), mini.value, np.NaN
+        else:
+            return -hc, round(-aprx_hc, 2), np.NaN, mini.value
     if mini.label == 1:
         return hc, round(aprx_hc, 2), mini.value, opp_odds
     else:
